@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wedding Build - Anshika</title>
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI,sans-serif;
+    overflow:hidden;
+    height:100vh;
+    background:#111;
+    color:white;
+}
+.screen{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:15px;
+    box-sizing:border-box;
+}
+#screen1{
+    background:linear-gradient(45deg,#ff9a9e,#fad0c4,#fbc2eb,#a18cd1);
+    background-size:400% 400%;
+    animation:bg 12s infinite;
+}
+@keyframes bg{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+.card{
+    background:white;
+    color:black;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    max-width:400px;
+    width:90%;
+    box-sizing: border-box;
+}
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    background:#ff4b7d;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:20px;
+}
+#screen2{
+    background:#1e1e1e;
+    display:none;
+    font-family:monospace;
+    align-items:flex-start;
+    padding:40px;
+    color:#00ff9c;
+    font-size:16px;
+}
+.terminal{white-space:pre-line;}
+#screen3{
+    display:none;
+    background:linear-gradient(120deg,#ff758c,#ff7eb3);
+    text-align:center;
+    padding:20px 15px;
+}
+#screen3 h1{
+    font-size:2em;
+    margin-bottom:10px;
+}
+#screen3 .message{
+    font-size:15px;
+    line-height:1.4;
+}
+#screen3 .message p{
+    margin-bottom:6px;
+}
+#screen3 .btn-next{
+    margin-top:15px;
+    padding:12px 25px;
+    font-size:16px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    background:#fff;
+    color:#ff4b7d;
+    font-weight:bold;
+}
+
+/* SCREEN 4 STYLES */
+#screen4 {
+    display: none;
+    text-align: center;
+    background: #1a0a16;
+    padding: 30px 15px;
+    box-sizing: border-box;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#screen4 .card {
+    max-width: 600px;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: #fff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 75, 125, 0.4);
+    font-size: 15px;
+    line-height: 1.4;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+#screen4 h1 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 2em;
+    color: #fff;
+}
+
+#screen4 .message p, 
+#screen4 .message ul {
+    margin-bottom: 10px;
+    color: #fce4ec;
+}
+
+#screen4 .message ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+
+#screen4 .message ul li {
+    margin-bottom: 4px;
+    font-weight: bold;
+    line-height: 1.3;
+    color: #fff9b0; /* pale yellow on pink */
+}
+
+#screen4 .message p:last-child {
+    margin-bottom: 0;
+}
+
+.message{
+    white-space:pre-line;
+}
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    top:-10px;
+    animation:fall 5s linear infinite;
+    font-size:20px;
+}
+@keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg);}
+}
+</style>
+</head>
+<body>
+
+<!-- SCREEN 1 -->
+<div id="screen1" class="screen">
+    <div class="card">
+        <h1>💍 Wedding Wishes</h1>
+        <h3> For My</h3>
+        <h3>Chotu si Anshika</h3>
+        <p>A little wish for the beginning of your most wonderful chapter ❤️</p>
+        <button onclick="startBuild()">Start Life Build 🚀</button>
+    </div>
+</div>
+
+<!-- SCREEN 2: Terminal -->
+<div id="screen2" class="screen">
+    <div class="terminal" id="terminal"></div>
+</div>
+
+<!-- SCREEN 3: Wedding Wishes -->
+<div id="screen3" class="screen">
+    <h1>✨ Dear Anshika ✨</h1>
+    <div class="message" id="finalText">
+        <p>As you are about to begin one of the most beautiful chapters of your life, I just want to say how incredibly happy I am for you.</p>
+        <p>The person who is going to spend his life with you is truly blessed. He is getting someone who is pure at heart, full of kindness, strong values, and a warmth that touches everyone around her.</p>
+        <p>In a world where it is rare to find someone so genuine and sincere, you have always been that rare soul.</p>
+        <p>I have always admired the way you care for people, the love you give so effortlessly, and the goodness that reflects in everything you do.</p>
+        <p>As you step into this new journey, may your life together be filled with laughter, understanding, endless support, and countless beautiful memories.</p>
+        <p>May your love grow stronger with each passing year—like a perfectly written program: stable, smooth, and built to last forever.</p>
+        <p>Wishing you a lifetime of happiness, shared dreams, and a home filled with warmth and love ❤️</p>
+        <p>Always cheering for you. Congratulations on this beautiful new beginning 💍</p>
+    </div>
+    <button class="btn-next" onclick="showFriendsScreen()">See a special message from your friends!</button>
+</div>
+
+<!-- SCREEN 4: Friends Message -->
+<div id="screen4" class="screen">
+    <div class="card">
+        <h1>⚠ Developer Warning</h1>
+        <div class="message" id="friendsText">
+            <p>⚠ Additional System Message ⚠</p>
+            <ul>
+                <li>Marriage Build: SUCCESS</li>
+                <li>New Life Module: ACTIVATED</li>
+                <li>But... you are NOT getting rid of us that easily 😄</li>
+            </ul>
+            <p>Before this program closes, there is one important reminder:</p>
+            <p>No matter how busy life gets, your friends will always be around to disturb you, make you laugh, and create countless memories.</p>
+            <p>Not yet ready to leave you</p>
+            <p>Because some friendships are permanent dependencies.</p>
+            <p>Wishing you a beautiful married life, who will always be part of your story ❤️</p>
+            <p>⚠ Friends Module: PERMANENTLY INSTALLED ✔</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// TERMINAL MESSAGES
+const buildLines = [
+    "> initializing love module... 💖",
+    "> loading happiness & laughter dependencies...",
+    "> checking soulmate compatibility... ✅",
+    "> compiling next chapter of life together...",
+    "> merging two beautiful futures... 🌟",
+    "> deploying lifelong partnership... 🚀",
+    "> build status: SUCCESS ❤️"
+];
+
+// SCREEN TRANSITIONS
+function startBuild(){
+    document.getElementById("screen1").style.display="none";
+    document.getElementById("screen2").style.display="flex";
+    runTerminal();
+}
+
+// TERMINAL TYPING
+async function runTerminal(){
+    const terminal = document.getElementById("terminal");
+    for(let line of buildLines){
+        await typeLine(line, terminal);
+        await delay(600);
+    }
+    setTimeout(showFinalScreen,1000);
+}
+function typeLine(text, container){
+    return new Promise(resolve=>{
+        let i=0;
+        const line=document.createElement("div");
+        container.appendChild(line);
+        function type(){
+            if(i<text.length){
+                line.textContent += text.charAt(i);
+                i++;
+                setTimeout(type,30);
+            } else { resolve(); }
+        }
+        type();
+    });
+}
+
+// FINAL SCREEN (3rd page)
+function showFinalScreen(){
+    document.getElementById("screen2").style.display="none";
+    document.getElementById("screen3").style.display="flex";
+    startHearts();
+    startConfetti();
+}
+
+// FRIENDS SCREEN (4th page)
+function showFriendsScreen(){
+    document.getElementById("screen3").style.display="none";
+    document.getElementById("screen4").style.display="flex";
+}
+
+// DELAY
+function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// HEARTS (3rd page)
+function startHearts(){
+    setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.className="confetti";
+        heart.innerHTML="❤";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*20+15)+"px";
+        heart.style.animationDuration=(Math.random()*3+3)+"s";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+    },300);
+}
+
+// CONFETTI (3rd page)
+function startConfetti(){
+    setInterval(()=>{
+        const conf = document.createElement("div");
+        conf.className="confetti";
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.background = `hsl(${Math.random()*360},70%,60%)`;
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),5000);
+    },100);
+}
+</script>
+
+</body>
+</html>
