@@ -1,206 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Wedding Build - Anshika</title>
-<style>
-/* BASIC BODY */
-body {
-    margin:0;
-    font-family: "Segoe UI", sans-serif;
-    height:100vh;
-    overflow:hidden;
-    background:#111;
-    color:white;
-}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wedding Build - Anshika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4b7d;
+            --secondary: #a18cd1;
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+        }
 
-/* SCREENS */
-.screen {
-    position:absolute;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    padding:20px;
-    box-sizing:border-box;
-    opacity:0;
-    transform:translateY(20px);
-    transition: opacity 1s ease, transform 1s ease;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.screen.active {
-    opacity:1;
-    transform:translateY(0);
-}
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f0c29; /* Deep space dark */
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* SCREEN 1 */
-#screen1 {
-    background:linear-gradient(45deg,#ff9a9e,#fad0c4,#fbc2eb,#a18cd1);
-    background-size:400% 400%;
-    animation:bg 12s infinite;
-}
-@keyframes bg {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
+        /* 2026 Animated Background Mesh */
+        .mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 75, 125, 0.15), transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(5%, 5%); }
+        }
 
-/* CARDS & BUTTONS */
-.card {
-    background:white;
-    color:black;
-    padding:30px;
-    border-radius:15px;
-    text-align:center;
-    max-width:500px;
-    width:90%;
-    box-sizing:border-box;
-}
-button, .btn-next {
-    padding:12px 25px;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-    margin-top:20px;
-    font-size:16px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-button { background:#ff4b7d; color:white; }
-button:hover, .btn-next:hover {
-    transform:scale(1.05);
-    box-shadow:0 4px 15px rgba(255,75,125,0.5);
-}
+        /* SCREEN LOGIC */
+        .screen {
+            position: absolute;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
 
-/* SCREEN 2 TERMINAL */
-#screen2 {
-    background:#1e1e1e;
-    display:none;
-    font-family:monospace;
-    align-items:flex-start;
-    padding:40px;
-    color:#00ff9c;
-    font-size:16px;
-    overflow-y:auto;
-}
-.terminal { white-space:pre-line; }
+        .screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-/* SCREEN 3 WISHES */
-#screen3 {
-    display:none;
-    background:linear-gradient(120deg,#ff758c,#ff7eb3);
-    text-align:center;
-    padding:20px;
-}
-#screen3 h1{ font-size:2em; margin-bottom:10px; }
-#screen3 .message{ font-size:15px; line-height:1.4; color:#fff; }
-#screen3 .message p{ opacity:0; transition: opacity 1s ease; margin-bottom:8px; }
+        /* GLASS CARD STYLE */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
 
-/* SCREEN 4 FRIENDS MESSAGE */
-#screen4 {
-    display:none;
-    text-align:center;
-    background:#1a0a16;
-    padding:30px 15px;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-#screen4 .card {
-    max-width:600px;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    color:#fff;
-    padding:30px 25px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(255,75,125,0.4);
-    font-size:15px;
-    line-height:1.4;
-    text-align:left;
-}
-#screen4 h1{margin-bottom:20px; font-size:2em; color:#fff;}
-#screen4 .message p, #screen4 .message ul{ margin-bottom:10px; color:#fce4ec; opacity:0; transition: opacity 1s ease;}
-#screen4 .message ul li{ list-style:none; font-weight:bold; line-height:1.3; color:#fff9b0; }
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* SCREEN 5 */
-#screen5 {
-    display:none;
-    text-align:center;
-    background:#2b0d2f;
-    padding:30px 15px;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-#screen5 .card {
-    max-width:500px;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    color:#fff;
-    padding:30px 25px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(255,75,125,0.4);
-    font-size:16px;
-    line-height:1.5;
-    text-align:center;
-}
-#screen5 .message p { opacity:0; transition: opacity 1s ease; margin-bottom:10px; }
+        /* BUTTONS */
+        button {
+            background: linear-gradient(45deg, var(--primary), #ff758c);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 75, 125, 0.3);
+        }
 
-/* CONFETTI/HEARTS */
-.confetti{
-    position:absolute;
-    width:10px;
-    height:10px;
-    top:-10px;
-    font-size:20px;
-    animation:fall 5s linear infinite;
-}
-@keyframes fall{ to{transform:translateY(110vh) rotate(360deg);} }
-</style>
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 75, 125, 0.5);
+        }
+
+        /* TERMINAL STYLE */
+        #terminal {
+            font-family: 'Courier New', monospace;
+            color: #00ff9c;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 2px solid #00ff9c;
+        }
+
+        /* TEXT SEQUENCING */
+        .message-content p, .message-content li {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.6s ease-out;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .reveal-active {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        ul { list-style: none; }
+        .highlight-li { color: #fff9b0; font-weight: bold; }
+
+        /* HEART PARTICLES */
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: rise 5s linear forwards;
+            z-index: 100;
+        }
+        @keyframes rise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- SCREEN 1 -->
+<div class="mesh"></div>
+
 <div id="screen1" class="screen active">
-    <div class="card">
+    <div class="glass-card">
         <h1>💍 Wedding Wishes</h1>
         <h3>For My Chotu si Anshika</h3>
-        <p>A little wish for the beginning of your most wonderful chapter ❤️</p>
+        <p style="margin-top:10px; opacity:0.8;">A little wish for the beginning of your most wonderful chapter ❤️</p>
         <button onclick="startBuild()">Start Life Build 🚀</button>
     </div>
 </div>
 
-<!-- SCREEN 2 TERMINAL -->
 <div id="screen2" class="screen">
-    <div class="terminal" id="terminal"></div>
+    <div id="terminal"></div>
 </div>
 
-<!-- SCREEN 3 WISHES -->
 <div id="screen3" class="screen">
-    <h1>✨ Dear Anshika ✨</h1>
-    <div class="message" id="finalText">
-        <p>As you are about to begin one of the most beautiful chapters of your life, I just want to say how incredibly happy I am for you.</p>
-        <p>The person who is going to spend his life with you is truly blessed. He is getting someone who is pure at heart, full of kindness, strong values, and a warmth that touches everyone around her.</p>
-        <p>In a world where it is rare to find someone so genuine and sincere, you have always been that rare soul.</p>
-        <p>I have always admired the way you care for people, the love you give so effortlessly, and the goodness that reflects in everything you do.</p>
-        <p>As you step into this new journey, may your life together be filled with laughter, understanding, endless support, and countless beautiful memories.</p>
-        <p>May your love grow stronger with each passing year—like a perfectly written program: stable, smooth, and built to last forever.</p>
-        <p>Wishing you a lifetime of happiness, shared dreams, and a home filled with warmth and love ❤️</p>
-        <p>Always cheering for you. Congratulations on this beautiful new beginning 💍</p>
+    <div class="glass-card">
+        <h1>✨ Dear Anshika ✨</h1>
+        <div class="message-content" id="text3">
+            <p>As you are about to begin one of the most beautiful chapters of your life, I just want to say how incredibly happy I am for you.</p>
+            <p>The person who is going to spend his life with you is truly blessed. He is getting someone who is pure at heart, full of kindness, strong values, and a warmth that touches everyone around her.</p>
+            <p>In a world where it is rare to find someone so genuine and sincere, you have always been that rare soul.</p>
+            <p>I have always admired the way you care for people, the love you give so effortlessly, and the goodness that reflects in everything you do.</p>
+            <p>As you step into this new journey, may your life together be filled with laughter, understanding, endless support, and countless beautiful memories.</p>
+            <p>May your love grow stronger with each passing year—like a perfectly written program: stable, smooth, and built to last forever.</p>
+            <p>Wishing you a lifetime of happiness, shared dreams, and a home filled with warmth and love ❤️</p>
+            <p>Always cheering for you. Congratulations on this beautiful new beginning 💍</p>
+        </div>
+        <button onclick="changeScreen(3, 4)">See a special message! ➔</button>
     </div>
-    <button class="btn-next" onclick="showFriendsScreen()">See a special message from your friends!</button>
 </div>
 
-<!-- SCREEN 4 FRIENDS MESSAGE -->
 <div id="screen4" class="screen">
-    <div class="card">
+    <div class="glass-card">
         <h1>⚠ Developer Warning</h1>
-        <div class="message" id="friendsText">
+        <div class="message-content" id="text4">
             <p>⚠ Additional System Message ⚠</p>
             <ul>
-                <li>Marriage Build: SUCCESS</li>
-                <li>New Life Module: ACTIVATED</li>
-                <li>But... you are NOT getting rid of us that easily 😄</li>
+                <li class="highlight-li">Marriage Build: SUCCESS</li>
+                <li class="highlight-li">New Life Module: ACTIVATED</li>
+                <li class="highlight-li">But... you are NOT getting rid of us that easily 😄</li>
             </ul>
             <p>Before this program closes, there is one important reminder:</p>
             <p>No matter how busy life gets, your friends will always be around to disturb you, make you laugh, and create countless memories.</p>
@@ -209,29 +199,26 @@ button:hover, .btn-next:hover {
             <p>Wishing you a beautiful married life, who will always be part of your story ❤️</p>
             <p>⚠ Friends Module: PERMANENTLY INSTALLED ✔</p>
         </div>
-        <button class="btn-next" onclick="showScreen5()">Next</button>
+        <button onclick="changeScreen(4, 5)">Next ➔</button>
     </div>
 </div>
 
-<!-- SCREEN 5 SPECIAL MESSAGE -->
 <div id="screen5" class="screen">
-    <div class="card">
+    <div class="glass-card">
         <h1>💌 A Heartfelt Reminder</h1>
-        <div class="message" id="screen5Text">
+        <div class="message-content" id="text5">
             <p>As you step into this new life, remember…</p>
             <p>No matter where life takes you, a part of me will always be with you.</p>
             <p>Through every laugh, every tear, every quiet moment, I hope you carry a little piece of our memories with you.</p>
             <p>Life will get busy. Moments will fly. But the heart never forgets the people who truly matter.</p>
             <p>So don’t forget me. Promise me you’ll sometimes pause, smile, and think of our friendship, no matter where life takes you.</p>
-            
             <p>All the happiness in the world belongs to you, my dear. ❤️</p>
         </div>
-        <button class="btn-next" onclick="finalEnd()">End Build</button>
+        <button onclick="finalEnd()">End Build</button>
     </div>
 </div>
 
 <script>
-// TERMINAL BUILD
 const buildLines = [
     "> initializing love module... 💖",
     "> loading happiness & laughter dependencies...",
@@ -242,108 +229,79 @@ const buildLines = [
     "> build status: SUCCESS ❤️"
 ];
 
-function startBuild(){
-    toggleScreen("screen1", "screen2");
+// Start the sequence
+function startBuild() {
+    changeScreen(1, 2);
     runTerminal();
 }
 
-async function runTerminal(){
-    const terminal = document.getElementById("terminal");
-    for(let line of buildLines){
-        await typeLine(line, terminal);
-        await delay(600);
+async function runTerminal() {
+    const term = document.getElementById("terminal");
+    for (let line of buildLines) {
+        let lineDiv = document.createElement("div");
+        lineDiv.style.marginBottom = "10px";
+        term.appendChild(lineDiv);
+        await typeText(line, lineDiv);
+        await new Promise(r => setTimeout(r, 600));
     }
-    setTimeout(()=>toggleScreen("screen2", "screen3"), 1000);
-    setTimeout(()=>animateText("finalText"), 1200);
+    setTimeout(() => changeScreen(2, 3), 1000);
 }
 
-// TYPING EFFECT
-function typeLine(text, container){
-    return new Promise(resolve=>{
-        let i=0;
-        const line=document.createElement("div");
-        container.appendChild(line);
-        function type(){
-            if(i<text.length){
-                line.textContent += text.charAt(i);
-                i++;
-                setTimeout(type,30);
-            } else resolve();
-        }
-        type();
+function typeText(text, el) {
+    return new Promise(res => {
+        let i = 0;
+        let interval = setInterval(() => {
+            el.textContent += text[i];
+            i++;
+            if (i === text.length) { clearInterval(interval); res(); }
+        }, 30);
     });
 }
 
-// DELAY
-function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+// Global Screen Switcher
+function changeScreen(oldNum, newNum) {
+    const oldScr = document.getElementById(`screen${oldNum}`);
+    const newScr = document.getElementById(`screen${newNum}`);
 
-// SCREEN TOGGLE
-function toggleScreen(hideId, showId){
-    document.getElementById(hideId).classList.remove("active");
-    setTimeout(()=>{document.getElementById(hideId).style.display="none";},300);
-    const showScreen = document.getElementById(showId);
-    showScreen.style.display="flex";
-    setTimeout(()=>showScreen.classList.add("active"),50);
+    oldScr.classList.remove("active");
+    setTimeout(() => {
+        oldScr.style.display = "none";
+        newScr.style.display = "flex";
+        setTimeout(() => {
+            newScr.classList.add("active");
+            animateText(`text${newNum}`);
+            if(newNum === 3) startHearts();
+        }, 50);
+    }, 800);
 }
 
-// SEQUENTIAL TEXT ANIMATION
-function animateText(containerId){
-    const container = document.getElementById(containerId);
-    const paragraphs = container.querySelectorAll("p, li");
-    paragraphs.forEach((p,i)=>{
-        setTimeout(()=>{p.style.opacity=1;}, i*800);
+function animateText(id) {
+    const container = document.getElementById(id);
+    if(!container) return;
+    const items = container.querySelectorAll("p, li");
+    items.forEach((item, i) => {
+        setTimeout(() => {
+            item.classList.add("reveal-active");
+        }, i * 700);
     });
 }
 
-// FRIENDS SCREEN
-function showFriendsScreen(){
-    toggleScreen("screen3","screen4");
-    setTimeout(()=>animateText("friendsText"), 500);
-}
-
-// SCREEN 5
-function showScreen5(){
-    toggleScreen("screen4","screen5");
-    setTimeout(()=>animateText("screen5Text"), 500);
-}
-
-// FINAL END ACTION
-function finalEnd(){
-    alert("Build Completed! ❤️ Wishing Anshika a beautiful life!");
-}
-
-// HEARTS & CONFETTI
-function startHearts(){
-    setInterval(()=>{
-        const heart=document.createElement("div");
-        heart.className="confetti";
-        heart.innerHTML="❤";
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(Math.random()*20+15)+"px";
-        heart.style.animationDuration=(Math.random()*3+3)+"s";
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = ["❤️", "💖", "✨", "💍"][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
         document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),6000);
-    },300);
-}
-function startConfetti(){
-    setInterval(()=>{
-        const conf=document.createElement("div");
-        conf.className="confetti";
-        conf.style.left=Math.random()*100+"vw";
-        conf.style.background=`hsl(${Math.random()*360},70%,60%)`;
-        document.body.appendChild(conf);
-        setTimeout(()=>conf.remove(),5000);
-    },100);
+        setTimeout(() => heart.remove(), 5000);
+    }, 400);
 }
 
-// START HEARTS & CONFETTI WHEN SCREEN 3 IS ACTIVE
-const observer = new MutationObserver(()=>{ 
-    if(document.getElementById("screen3").classList.contains("active")){
-        startHearts();
-        startConfetti();
-    }
-});
-observer.observe(document.getElementById("screen3"), { attributes:true, attributeFilter:['class'] });
+function finalEnd() {
+    alert("Build Completed! ❤️ Sending all my love to Anshika!");
+}
 </script>
 </body>
 </html>
