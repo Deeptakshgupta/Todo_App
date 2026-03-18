@@ -4,48 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Wedding Build - Anshika</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff4b7d;
             --secondary: #a18cd1;
-            --glass: rgba(255, 255, 255, 0.1);
+            --glass-simple: rgba(255, 255, 255, 0.1);
+            --glass-enhanced: rgba(255, 255, 255, 0.07);
             --border: rgba(255, 255, 255, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0f0c29; /* Deep space dark */
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: #0f0c29;
+            background: radial-gradient(circle at center, #1b1448 0%, #0f0c29 100%);
             height: 100vh;
             color: white;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: crosshair;
         }
 
-        /* 2026 Animated Background Mesh */
         .mesh {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 75, 125, 0.15), transparent 50%);
-            animation: pulse 8s ease-in-out infinite alternate;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 75, 125, 0.1), transparent 50%);
+            animation: pulse 10s ease-in-out infinite alternate;
         }
         @keyframes pulse {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.2) translate(5%, 5%); }
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* SCREEN LOGIC */
         .screen {
             position: absolute;
             width: 100%;
-            max-width: 600px;
-            padding: 30px;
+            max-width: 620px;
+            padding: 25px;
             display: none;
             flex-direction: column;
             align-items: center;
@@ -61,9 +61,9 @@
             transform: translateY(0);
         }
 
-        /* GLASS CARD STYLE */
+        /* Base Glass Card */
         .glass-card {
-            background: var(--glass);
+            background: var(--glass-simple);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
@@ -71,6 +71,38 @@
             padding: 40px 30px;
             width: 100%;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glass Shimmer Animation */
+        .glass-card::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 6s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* Enhanced Style for Section 4 & 5 */
+        .enhanced-card {
+            background: var(--glass-enhanced) !important;
+            backdrop-filter: blur(35px) !important;
+            border-radius: 40px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         h1 {
@@ -82,7 +114,11 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* BUTTONS */
+        .enhanced-card h1 {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 2px 10px rgba(255, 154, 158, 0.3));
+        }
+
         button {
             background: linear-gradient(45deg, var(--primary), #ff758c);
             color: white;
@@ -95,6 +131,7 @@
             margin-top: 25px;
             transition: 0.3s;
             box-shadow: 0 10px 20px rgba(255, 75, 125, 0.3);
+            z-index: 10;
         }
 
         button:hover {
@@ -102,9 +139,8 @@
             box-shadow: 0 15px 30px rgba(255, 75, 125, 0.5);
         }
 
-        /* TERMINAL STYLE */
         #terminal {
-            font-family: 'Courier New', monospace;
+            font-family: 'Fira Code', monospace;
             color: #00ff9c;
             text-align: left;
             background: rgba(0, 0, 0, 0.6);
@@ -113,17 +149,30 @@
             width: 100%;
             font-size: 14px;
             line-height: 1.6;
-            border-left: 2px solid #00ff9c;
+            border-left: 3px solid #00ff9c;
         }
 
-        /* TEXT SEQUENCING */
         .message-content p, .message-content li {
             opacity: 0;
-            transform: translateY(10px);
-            transition: 0.6s ease-out;
+            transform: translateY(15px);
+            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             margin-bottom: 12px;
-            line-height: 1.5;
+            line-height: 1.6;
             font-size: 15px;
+        }
+
+        .highlight-li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border-left: 4px solid var(--primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            text-align: left;
+            list-style: none;
+            color: #fff9b0;
+            font-weight: bold;
         }
 
         .reveal-active {
@@ -131,24 +180,35 @@
             transform: translateY(0) !important;
         }
 
-        ul { list-style: none; }
-        .highlight-li { color: #fff9b0; font-weight: bold; }
-
-        /* HEART PARTICLES */
+        /* Floating Particles */
         .heart {
             position: absolute;
             pointer-events: none;
             animation: rise 5s linear forwards;
             z-index: 100;
         }
+
+        /* Click Interaction Particles */
+        .click-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: explode 0.8s ease-out forwards;
+        }
+
         @keyframes rise {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             20% { opacity: 0.8; }
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; }
+        }
     </style>
 </head>
-<body>
+<body onclick="spawnBurst(event)">
 
 <div class="mesh"></div>
 
@@ -183,10 +243,9 @@
 </div>
 
 <div id="screen4" class="screen">
-    <div class="glass-card">
+    <div class="glass-card enhanced-card">
         <h1>⚠ Developer Warning</h1>
         <div class="message-content" id="text4">
-            <p>⚠ Additional System Message ⚠</p>
             <ul>
                 <li class="highlight-li">Marriage Build: SUCCESS</li>
                 <li class="highlight-li">New Life Module: ACTIVATED</li>
@@ -197,14 +256,14 @@
             <p>Not yet ready to leave you</p>
             <p>Because some friendships are permanent dependencies.</p>
             <p>Wishing you a beautiful married life, who will always be part of your story ❤️</p>
-            <p>⚠ Friends Module: PERMANENTLY INSTALLED ✔</p>
+            <p style="font-family: 'Fira Code'; font-size: 13px; margin-top: 10px;">⚠ Friends Module: PERMANENTLY INSTALLED ✔</p>
         </div>
         <button onclick="changeScreen(4, 5)">Next ➔</button>
     </div>
 </div>
 
 <div id="screen5" class="screen">
-    <div class="glass-card">
+    <div class="glass-card enhanced-card">
         <h1>💌 A Heartfelt Reminder</h1>
         <div class="message-content" id="text5">
             <p>As you step into this new life, remember…</p>
@@ -229,7 +288,10 @@ const buildLines = [
     "> build status: SUCCESS ❤️"
 ];
 
-// Start the sequence
+// Secret Console Message
+console.log("%c💍 Wedding Build Status: SUCCESS", "color: #ff4b7d; font-size: 25px; font-weight: bold;");
+console.log("%cAnshika, you are the most stable 'production' build ever. Wishing you a life with 0 bugs and 100% happiness!", "color: #a18cd1; font-size: 14px;");
+
 function startBuild() {
     changeScreen(1, 2);
     runTerminal();
@@ -258,11 +320,9 @@ function typeText(text, el) {
     });
 }
 
-// Global Screen Switcher
 function changeScreen(oldNum, newNum) {
     const oldScr = document.getElementById(`screen${oldNum}`);
     const newScr = document.getElementById(`screen${newNum}`);
-
     oldScr.classList.remove("active");
     setTimeout(() => {
         oldScr.style.display = "none";
@@ -280,9 +340,7 @@ function animateText(id) {
     if(!container) return;
     const items = container.querySelectorAll("p, li");
     items.forEach((item, i) => {
-        setTimeout(() => {
-            item.classList.add("reveal-active");
-        }, i * 700);
+        setTimeout(() => { item.classList.add("reveal-active"); }, i * 500);
     });
 }
 
@@ -296,7 +354,22 @@ function startHearts() {
         heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 5000);
-    }, 400);
+    }, 600);
+}
+
+// Click burst effect
+function spawnBurst(e) {
+    for (let i = 0; i < 6; i++) {
+        const h = document.createElement("div");
+        h.className = "click-heart";
+        h.innerHTML = ["❤️", "✨", "💖"][Math.floor(Math.random() * 3)];
+        h.style.left = e.clientX + "px";
+        h.style.top = e.clientY + "px";
+        h.style.setProperty('--x', (Math.random() * 100 - 50) + "px");
+        h.style.setProperty('--y', (Math.random() * 100 - 50) + "px");
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 800);
+    }
 }
 
 function finalEnd() {
