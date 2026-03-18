@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wedding Build - Anshika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4b7d;
+            --secondary: #a18cd1;
+            --glass-simple: rgba(255, 255, 255, 0.1);
+            --glass-enhanced: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f0c29;
+            background: radial-gradient(circle at center, #1b1448 0%, #0f0c29 100%);
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 75, 125, 0.1), transparent 50%);
+            animation: pulse 10s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            max-width: 620px;
+            padding: 25px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-card {
+            background: var(--glass-simple);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        /* Enhanced Style for Section 4 & 5 */
+        .enhanced-card {
+            background: var(--glass-enhanced) !important;
+            backdrop-filter: blur(35px) !important;
+            border-radius: 40px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .enhanced-card h1 {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 2px 10px rgba(255, 154, 158, 0.3));
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--primary), #ff758c);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 75, 125, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 75, 125, 0.5);
+        }
+
+        #terminal {
+            font-family: 'Fira Code', monospace;
+            color: #00ff9c;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 3px solid #00ff9c;
+        }
+
+        .message-content p, .message-content li {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.6s ease-out;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .highlight-li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border-left: 4px solid var(--primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            text-align: left;
+            list-style: none;
+            color: #fff9b0;
+            font-weight: bold;
+        }
+
+        .reveal-active {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: rise 5s linear forwards;
+            z-index: 100;
+        }
+        @keyframes rise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mesh"></div>
+
+<div id="screen1" class="screen active">
+    <div class="glass-card">
+        <h1>💍 Wedding Wishes</h1>
+        <h3>For My Chotu si Anshika</h3>
+        <p style="margin-top:10px; opacity:0.8;">A little wish for the beginning of your most wonderful chapter ❤️</p>
+        <button onclick="startBuild()">Start Life Build 🚀</button>
+    </div>
+</div>
+
+<div id="screen2" class="screen">
+    <div id="terminal"></div>
+</div>
+
+<div id="screen3" class="screen">
+    <div class="glass-card">
+        <h1>✨ Dear Anshika ✨</h1>
+        <div class="message-content" id="text3">
+            <p>As you are about to begin one of the most beautiful chapters of your life, I just want to say how incredibly happy I am for you.</p>
+            <p>The person who is going to spend his life with you is truly blessed. He is getting someone who is pure at heart, full of kindness, strong values, and a warmth that touches everyone around her.</p>
+            <p>In a world where it is rare to find someone so genuine and sincere, you have always been that rare soul.</p>
+            <p>I have always admired the way you care for people, the love you give so effortlessly, and the goodness that reflects in everything you do.</p>
+            <p>As you step into this new journey, may your life together be filled with laughter, understanding, endless support, and countless beautiful memories.</p>
+            <p>May your love grow stronger with each passing year—like a perfectly written program: stable, smooth, and built to last forever.</p>
+            <p>Wishing you a lifetime of happiness, shared dreams, and a home filled with warmth and love ❤️</p>
+            <p>Always cheering for you. Congratulations on this beautiful new beginning 💍</p>
+        </div>
+        <button onclick="changeScreen(3, 4)">See a special message! ➔</button>
+    </div>
+</div>
+
+<div id="screen4" class="screen">
+    <div class="glass-card enhanced-card">
+        <h1>⚠ Developer Warning</h1>
+        <div class="message-content" id="text4">
+            <p style="color: var(--primary); font-weight: bold;">⚠ Additional System Message ⚠</p>
+            <ul>
+                <li class="highlight-li">Marriage Build: SUCCESS</li>
+                <li class="highlight-li">New Life Module: ACTIVATED</li>
+                <li class="highlight-li">But... you are NOT getting rid of us that easily 😄</li>
+            </ul>
+            <p>Before this program closes, there is one important reminder:</p>
+            <p>No matter how busy life gets, your friends will always be around to disturb you, make you laugh, and create countless memories.</p>
+            <p>Not yet ready to leave you</p>
+            <p>Because some friendships are permanent dependencies.</p>
+            <p>Wishing you a beautiful married life, who will always be part of your story ❤️</p>
+            <p style="font-family: 'Fira Code'; font-size: 13px; margin-top: 10px;">⚠ Friends Module: PERMANENTLY INSTALLED ✔</p>
+        </div>
+        <button onclick="changeScreen(4, 5)">Next ➔</button>
+    </div>
+</div>
+
+<div id="screen5" class="screen">
+    <div class="glass-card enhanced-card">
+        <h1>💌 A Heartfelt Reminder</h1>
+        <div class="message-content" id="text5">
+            <p>As you step into this new life, remember…</p>
+            <p>No matter where life takes you, a part of me will always be with you.</p>
+            <p>Through every laugh, every tear, every quiet moment, I hope you carry a little piece of our memories with you.</p>
+            <p>Life will get busy. Moments will fly. But the heart never forgets the people who truly matter.</p>
+            <p>So don’t forget me. Promise me you’ll sometimes pause, smile, and think of our friendship, no matter where life takes you.</p>
+            <p>All the happiness in the world belongs to you, my dear. ❤️</p>
+        </div>
+        <button onclick="finalEnd()">End Build</button>
+    </div>
+</div>
+
+<script>
+const buildLines = [
+    "> initializing love module... 💖",
+    "> loading happiness & laughter dependencies...",
+    "> checking soulmate compatibility... ✅",
+    "> compiling next chapter of life together...",
+    "> merging two beautiful futures... 🌟",
+    "> deploying lifelong partnership... 🚀",
+    "> build status: SUCCESS ❤️"
+];
+
+function startBuild() {
+    changeScreen(1, 2);
+    runTerminal();
+}
+
+async function runTerminal() {
+    const term = document.getElementById("terminal");
+    for (let line of buildLines) {
+        let lineDiv = document.createElement("div");
+        lineDiv.style.marginBottom = "10px";
+        term.appendChild(lineDiv);
+        await typeText(line, lineDiv);
+        await new Promise(r => setTimeout(r, 600));
+    }
+    setTimeout(() => changeScreen(2, 3), 1000);
+}
+
+function typeText(text, el) {
+    return new Promise(res => {
+        let i = 0;
+        let interval = setInterval(() => {
+            el.textContent += text[i];
+            i++;
+            if (i === text.length) { clearInterval(interval); res(); }
+        }, 30);
+    });
+}
+
+function changeScreen(oldNum, newNum) {
+    const oldScr = document.getElementById(`screen${oldNum}`);
+    const newScr = document.getElementById(`screen${newNum}`);
+    oldScr.classList.remove("active");
+    setTimeout(() => {
+        oldScr.style.display = "none";
+        newScr.style.display = "flex";
+        setTimeout(() => {
+            newScr.classList.add("active");
+            animateText(`text${newNum}`);
+            if(newNum === 3) startHearts();
+        }, 50);
+    }, 800);
+}
+
+function animateText(id) {
+    const container = document.getElementById(id);
+    if(!container) return;
+    const items = container.querySelectorAll("p, li");
+    items.forEach((item, i) => {
+        setTimeout(() => { item.classList.add("reveal-active"); }, i * 700);
+    });
+}
+
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = ["❤️", "💖", "✨", "💍"][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }, 400);
+}
+
+function finalEnd() {
+    alert("Build Completed! ❤️ Sending all my love to Anshika!");
+}
+</script>
+</body>
+</html>
